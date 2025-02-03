@@ -22,15 +22,17 @@ router.get('/', async (req, res) => {
 
 router.post('/', async (req, res) => {
     try {
-        const { titulo, descricao, data_inicio, data_fim } = req.body;
+        const { titulo, descricao, data_inicio, data_fim, percentual_desconto } = req.body;
         
-        if (!titulo || !data_inicio || !data_fim) {
-            return res.status(400).json({ error: 'Título, data de início e data de fim são obrigatórios' });
+        if (!titulo || !data_inicio || !data_fim || !percentual_desconto) {
+            return res.status(400).json({ 
+                error: 'Título, data de início, data de fim e percentual de desconto são obrigatórios' 
+            });
         }
 
         const { rows } = await pool.query(
-            'INSERT INTO promocoes (titulo, descricao, data_inicio, data_fim) VALUES ($1, $2, $3, $4) RETURNING *',
-            [titulo, descricao, data_inicio, data_fim]
+            'INSERT INTO promocoes (titulo, descricao, data_inicio, data_fim, percentual_desconto) VALUES ($1, $2, $3, $4, $5) RETURNING *',
+            [titulo, descricao, data_inicio, data_fim, percentual_desconto]
         );
         res.status(201).json(rows[0]);
     } catch (error) {
@@ -42,15 +44,17 @@ router.post('/', async (req, res) => {
 router.put('/:id', async (req, res) => {
     try {
         const { id } = req.params;
-        const { titulo, descricao, data_inicio, data_fim } = req.body;
+        const { titulo, descricao, data_inicio, data_fim, percentual_desconto } = req.body;
         
-        if (!titulo || !data_inicio || !data_fim) {
-            return res.status(400).json({ error: 'Título, data de início e data de fim são obrigatórios' });
+        if (!titulo || !data_inicio || !data_fim || !percentual_desconto) {
+            return res.status(400).json({ 
+                error: 'Título, data de início, data de fim e percentual de desconto são obrigatórios' 
+            });
         }
 
         const { rows } = await pool.query(
-            'UPDATE promocoes SET titulo = $1, descricao = $2, data_inicio = $3, data_fim = $4 WHERE id = $5 RETURNING *',
-            [titulo, descricao, data_inicio, data_fim, id]
+            'UPDATE promocoes SET titulo = $1, descricao = $2, data_inicio = $3, data_fim = $4, percentual_desconto = $5 WHERE id = $6 RETURNING *',
+            [titulo, descricao, data_inicio, data_fim, percentual_desconto, id]
         );
 
         if (rows.length === 0) {

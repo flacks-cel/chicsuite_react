@@ -3,26 +3,9 @@ import { BrowserRouter as Router, Routes, Route } from 'react-router-dom';
 import logo from './assets/images/logo.png';
 import Navbar from './components/layout/Navbar';
 import ListaClientes from './components/Clientes/ListaClientes';
-
-// Componente para a página inicial
-const Home = () => (
-  <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
-    <div className="bg-white rounded-lg shadow-lg p-6 hover:shadow-xl transition-shadow">
-      <h2 className="text-xl font-bold text-purple-800 mb-2">Atendimentos do Dia</h2>
-      <p className="text-gray-600">Visualize e gerencie os atendimentos</p>
-    </div>
-
-    <div className="bg-white rounded-lg shadow-lg p-6 hover:shadow-xl transition-shadow">
-      <h2 className="text-xl font-bold text-purple-800 mb-2">Produtos em Baixa</h2>
-      <p className="text-gray-600">Verifique o estoque dos produtos</p>
-    </div>
-
-    <div className="bg-white rounded-lg shadow-lg p-6 hover:shadow-xl transition-shadow">
-      <h2 className="text-xl font-bold text-purple-800 mb-2">Promoções Ativas</h2>
-      <p className="text-gray-600">Confira as promoções em andamento</p>
-    </div>
-  </div>
-);
+import ListaProdutos from './components/Produtos/ListaProdutos';
+import ListaProfissionais from './components/Profissionais/ListaProfissionais';
+import ListaPromocoes from './components/Promocoes/ListaPromocoes';
 
 function App() {
   return (
@@ -50,15 +33,34 @@ function App() {
           <Routes>
             <Route path="/" element={<Home />} />
             <Route path="/clientes" element={<ListaClientes />} />
-            <Route path="/agendamentos" element={<div>Em construção: Agendamentos</div>} />
-            <Route path="/produtos" element={<div>Em construção: Produtos</div>} />
-            <Route path="/promocoes" element={<div>Em construção: Promoções</div>} />
-            <Route path="/dashboard" element={<div>Em construção: Dashboard</div>} />
+            <Route path="/produtos" element={<ListaProdutos />} />
+            <Route path="/profissionais" element={<ListaProfissionais />} />
+            <Route path="/promocoes" element={<ListaPromocoes />} />
+            <Route path="/atendimentos" element={<div>Em construção: Atendimentos</div>} />
           </Routes>
         </main>
       </div>
     </Router>
   );
 }
+
+const Home = () => (
+  <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+    <div className="bg-white rounded-lg shadow-lg p-6 hover:shadow-xl transition-shadow">
+      <h2 className="text-xl font-bold text-purple-800 mb-2">Atendimentos do Dia</h2>
+      <p className="text-gray-600">Visualize e gerencie os atendimentos</p>
+    </div>
+
+    <div className="bg-white rounded-lg shadow-lg p-6 hover:shadow-xl transition-shadow">
+      <h2 className="text-xl font-bold text-purple-800 mb-2">Produtos em Baixa</h2>
+      <p className="text-gray-600">Verifique o estoque dos produtos</p>
+    </div>
+
+    <div className="bg-white rounded-lg shadow-lg p-6 hover:shadow-xl transition-shadow">
+      <h2 className="text-xl font-bold text-purple-800 mb-2">Promoções Ativas</h2>
+      <p className="text-gray-600">Confira as promoções em andamento</p>
+    </div>
+  </div>
+);
 
 export default App;

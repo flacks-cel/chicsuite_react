@@ -5,6 +5,7 @@ const clientesRoutes = require('./routes/clientesRoutes');
 const produtosRoutes = require('./routes/produtosRoutes');
 const profissionaisRoutes = require('./routes/profissionaisRoutes');
 const promocoesRoutes = require('./routes/promocoesRoutes');
+const atendimentosRoutes = require('./routes/atendimentosRoutes');
 
 const app = express();
 
@@ -25,6 +26,7 @@ app.use('/clientes', clientesRoutes);
 app.use('/produtos', produtosRoutes);
 app.use('/profissionais', profissionaisRoutes);
 app.use('/promocoes', promocoesRoutes);
+app.use('/atendimentos', atendimentosRoutes);
 
 app.use((err, req, res, next) => {
     console.error('Erro na aplicação:', err);
