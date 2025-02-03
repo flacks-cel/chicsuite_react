@@ -1,11 +1,3 @@
-/**
- * ChicSuite - Sistema de Gestão para Salão de Beleza
- * Copyright (c) 2024-2025 Flávio Lacks
- * 
- * Todos os direitos reservados. Este software não pode ser copiado, modificado,
-   distribuído ou usado sem permissão expressa do autor.
-  */
-
 const express = require('express');
 const cors = require('cors');
 const helmet = require('helmet');
@@ -13,7 +5,7 @@ const clientesRoutes = require('./routes/clientesRoutes');
 const produtosRoutes = require('./routes/produtosRoutes');
 const profissionaisRoutes = require('./routes/profissionaisRoutes');
 const promocoesRoutes = require('./routes/promocoesRoutes');
-const atendimentosRoutes = require('./routes/atendimentosRoutes');
+const agendamentosRoutes = require('./routes/agendamentosRoutes');
 
 const app = express();
 
@@ -34,7 +26,7 @@ app.use('/clientes', clientesRoutes);
 app.use('/produtos', produtosRoutes);
 app.use('/profissionais', profissionaisRoutes);
 app.use('/promocoes', promocoesRoutes);
-app.use('/atendimentos', atendimentosRoutes);
+app.use('/agendamentos', agendamentosRoutes);
 
 app.use((err, req, res, next) => {
     console.error('Erro na aplicação:', err);

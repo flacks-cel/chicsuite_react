@@ -36,12 +36,6 @@ const Navbar = () => {
             Dashboard
           </NavLink>
         </div>
-        
-        <div className="flex items-center gap-2">
-          <button className="px-4 py-2 bg-pink-500 text-white rounded-lg hover:bg-pink-600 transition-colors">
-            Novo Atendimento
-          </button>
-        </div>
       </div>
     </nav>
   );
