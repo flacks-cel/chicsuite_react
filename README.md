@@ -1,49 +1,5 @@
 ## Arquitetura do Sistema **ChicSuite**:
 
-
-+----------------------------------------------------------------------------------------+
-|                                                                                        |
-|                                   **Sistema ChicSuite**                                |
-|                                                                                        |
-|   +-------------------+       +-------------------+       +-------------------+        |
-|   |                   |       |                   |       |                   |        |
-|   |    Frontend       |       |    Backend        |       |    Banco de Dados |        |
-|   |   (React)         |       |   (Node.js +      |       |   (PostgreSQL)    |        |
-|   |                   |       |    Express)       |       |                   |        |
-|   |                   |       |                   |       |                   |        |
-|   |   Interface do    |<----->|   API RESTful     |<----->|   Tabelas:        |        |
-|   |   Usuário         | HTTP  |   (Rotas GET,     |  SQL  |   - clientes      |        |
-|   |                   |       |    POST, PUT,     |       |   - profissionais |        |
-|   |   Acessível em:   |       |    DELETE)        |       |   - produtos      |        |
-|   |   localhost:3000  |       |   Roda em:        |       |   - promoções     |        |
-|   |                   |       |   localhost:3000  |       |   - atendimentos  |        |
-|   +-------------------+       +-------------------+       +-------------------+        |
-|           ^                           ^                           ^                    |
-|           |                           |                           |                    |
-|           |                           |                           |                    |
-|   +-------v---------------------------v---------------------------v-------+            |
-|   |                                                                       |            |
-|   |                         Docker Compose / Kubernetes                   |            |
-|   |                                                                       |            |
-|   |   - Gerencia os containers do Frontend, Backend e Banco de Dados.     |            |
-|   |   - Garante que os serviços estejam sempre disponíveis.               |            |
-|   |                                                                       |            |
-|   +-----------------------------------------------------------------------+            |
-|                                                                                        |
-|                                                                                        |
-|   +-------------------+       +-------------------+       +-------------------+        |
-|   |                   |       |                   |       |                   |        |
-|   |    Terraform      |       |    Kubernetes     |       |      Docker       |        |
-|   | (Infraestrutura)  |       |   (Orquestração)  |       |   (Containers)    |        |
-|   |                   |       |                   |       |                   |        |
-|   |   - Provisiona    |       |   - Gerencia      |       |   - Isola e       |        |
-|   |     recursos na   |       |     containers    |       |     executa os    |        |
-|   |     nuvem.        |       |     em cluster.   |       |     serviços.     |        |
-|   |                   |       |                   |       |                   |        |
-|   +-------------------+       +-------------------+       +-------------------+        |
-|                                                                                        |
-+----------------------------------------------------------------------------------------+
-
 ### Explicação
 
 - **Frontend**: Interface do usuário desenvolvida em React.
