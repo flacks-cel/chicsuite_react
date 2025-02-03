@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import axios from 'axios';
-import { Plus, Pencil, Trash2, Search, Percent } from 'lucide-react';
+import { Plus, Pencil, Trash2, Search } from 'lucide-react';
 
 const ListaPromocoes = () => {
   const [promocoes, setPromocoes] = useState([]);
@@ -56,7 +56,8 @@ const ListaPromocoes = () => {
     setFormData({
       ...promocao,
       data_inicio: new Date(promocao.data_inicio).toISOString().split('T')[0],
-      data_fim: new Date(promocao.data_fim).toISOString().split('T')[0]
+      data_fim: new Date(promocao.data_fim).toISOString().split('T')[0],
+      percentual_desconto: promocao.percentual_desconto || ''
     });
     setShowForm(true);
   };
@@ -88,6 +89,10 @@ const ListaPromocoes = () => {
     return hoje >= inicio && hoje <= fim;
   };
 
+  const formatarPercentual = (valor) => {
+    return valor ? `${Number(valor).toFixed(2)}%` : '-';
+  };
+
   return (
     <div className="p-6">
       <div className="flex justify-between items-center mb-6">
@@ -110,17 +115,15 @@ const ListaPromocoes = () => {
         </button>
       </div>
 
-      <div className="mb-6">
-        <div className="relative">
-          <Search className="absolute left-3 top-1/2 transform -translate-y-1/2 text-gray-400 w-5 h-5" />
-          <input
-            type="text"
-            placeholder="Buscar promoções..."
-            className="w-full pl-10 pr-4 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-purple-500"
-            value={busca}
-            onChange={(e) => setBusca(e.target.value)}
-          />
-        </div>
+      <div className="mb-6 relative">
+        <Search className="absolute left-3 top-1/2 transform -translate-y-1/2 text-gray-400 w-5 h-5" />
+        <input
+          type="text"
+          placeholder="Buscar promoções..."
+          className="w-full pl-10 pr-4 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-purple-500"
+          value={busca}
+          onChange={(e) => setBusca(e.target.value)}
+        />
       </div>
 
       {showForm && (
@@ -262,7 +265,7 @@ const ListaPromocoes = () => {
                 <tr key={promocao.id} className="hover:bg-gray-50">
                   <td className="px-6 py-4 whitespace-nowrap">{promocao.titulo}</td>
                   <td className="px-6 py-4 whitespace-nowrap">{promocao.descricao}</td>
-                  <td className="px-6 py-4 whitespace-nowrap">{promocao.percentual_desconto}%</td>
+                  <td className="px-6 py-4 whitespace-nowrap">{formatarPercentual(promocao.percentual_desconto)}</td>
                   <td className="px-6 py-4 whitespace-nowrap">{formatarData(promocao.data_inicio)}</td>
                   <td className="px-6 py-4 whitespace-nowrap">{formatarData(promocao.data_fim)}</td>
                   <td className="px-6 py-4 whitespace-nowrap">

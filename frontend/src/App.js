@@ -6,6 +6,7 @@ import ListaClientes from './components/Clientes/ListaClientes';
 import ListaProdutos from './components/Produtos/ListaProdutos';
 import ListaProfissionais from './components/Profissionais/ListaProfissionais';
 import ListaPromocoes from './components/Promocoes/ListaPromocoes';
+import ListaAgendamentos from './components/Atendimentos/ListaAgendamentos';
 
 function App() {
   return (
@@ -36,7 +37,7 @@ function App() {
             <Route path="/produtos" element={<ListaProdutos />} />
             <Route path="/profissionais" element={<ListaProfissionais />} />
             <Route path="/promocoes" element={<ListaPromocoes />} />
-            <Route path="/atendimentos" element={<div>Em construção: Atendimentos</div>} />
+            <Route path="/agendamentos" element={<ListaAgendamentos />} />
           </Routes>
         </main>
       </div>

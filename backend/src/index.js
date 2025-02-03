@@ -1,3 +1,11 @@
+/**
+ * ChicSuite - Sistema de Gestão para Salão de Beleza
+ * Copyright (c) 2024-2025 Flávio Lacks
+ * 
+ * Todos os direitos reservados. Este software não pode ser copiado, modificado,
+   distribuído ou usado sem permissão expressa do autor.
+  */
+
 const express = require('express');
 const cors = require('cors');
 const helmet = require('helmet');
