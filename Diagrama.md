@@ -1,6 +1,4 @@
-## Arquitetura do Sistema
-
-Arquitetura do sistema **ChicSuite**:
+## DIAGRAMA DO SISTEMA **ChicSuite**:
 
 ```mermaid
 graph TD
