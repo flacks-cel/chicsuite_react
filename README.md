@@ -3,57 +3,164 @@
 >  
 > Todos os direitos reservados. Este software não pode ser copiado, modificado, distribuído ou usado sem permissão expressa do autor.
 
-## Arquitetura do Sistema **ChicSuite**:
+# ChicSuite - Sistema de Gestão para Salão de Beleza
 
-### Explicação
+## Arquitetura do Sistema
 
-- **Frontend**: Interface do usuário desenvolvida em React.
-- **Backend**: API RESTful desenvolvida em Node.js e Express.
-- **Banco de Dados**: PostgreSQL para armazenamento de dados.
-- **Docker Compose / Kubernetes**: Gerencia a infraestrutura e orquestra os containers.
-- **Terraform**: Automatiza a criação de infraestrutura na nuvem.
+O ChicSuite é dividido em três componentes principais:
+- Frontend (React)
+- Backend (Node.js/Express)
+- Banco de dados (PostgreSQL)
 
-**Descrição da Arquitetura**
+## Estrutura Kubernetes
 
-O sistema **ChicSuite** é composto por três componentes principais:
+O sistema está organizado em diferentes recursos do Kubernetes:
 
-**FRONTEND**
+### Database (PostgreSQL)
+- StatefulSet para garantir persistência dos dados
+- ConfigMap com configurações do banco
+- Secret para senhas e dados sensíveis
+- PersistentVolume para armazenamento
+- Service para comunicação interna
 
-Desenvolvido em React.
+### Backend
+- Deployment para gerenciar os pods
+- Service para expor a API
+- Configuração de ambiente via ConfigMap
+- Conexão com o banco via variáveis de ambiente
 
-Responsável pela interface do usuário.
+### Frontend
+- Deployment para gerenciar a interface
+- Service do tipo LoadBalancer para acesso externo
+- Configuração de ambiente para conectar com o backend
 
-Comunica-se com o backend via Axios para buscar e enviar dados.
+### Ingress
+- Gerencia o tráfego externo
+- Roteia requisições para os serviços apropriados
+- Configura SSL/TLS (se necessário)
 
-Roda na porta 3000 (ou 3001, dependendo da configuração do Docker).
+## Como Executar
 
-**BACKEND**
+1. Pré-requisitos:
+   - Kubernetes cluster configurado (minikube para desenvolvimento)
+   - kubectl instalado
+   - Docker instalado
 
-Desenvolvido em Node.js com Express.
+2. Iniciar o cluster:
+```bash
+minikube start
+```
 
-Expõe uma API RESTful para o frontend.
+3. Habilitar o Ingress:
+```bash
+minikube addons enable ingress
+```
 
-Conecta-se ao banco de dados PostgreSQL para persistir dados.
+4. Construir as imagens:
+```bash
+eval $(minikube docker-env)
+docker-compose build
+```
 
-Roda na porta 3000.
+5. Aplicar as configurações Kubernetes:
+```bash
+kubectl apply -f k8s/database/
+kubectl apply -f k8s/backend/
+kubectl apply -f k8s/frontend/
+kubectl apply -f k8s/ingress.yaml
+```
 
-**BANCO DE DADOS**
+6. Verificar o status:
+```bash
+kubectl get pods
+kubectl get services
+kubectl get ingress
+```
 
-Banco de Dados PostgreSQL:
+7. Acessar o sistema:
+```bash
+# Obter o IP do minikube
+minikube ip
 
-Armazena dados de clientes, profissionais, produtos, promoções e atendimentos.
+# Adicionar ao /etc/hosts:
+# [minikube-ip] chicsuite.local
+```
 
-Roda na porta 5432.
+O sistema estará disponível em: http://chicsuite.local
 
-Esse sistema é containerizado usando Docker e Docker Compose, e pode ser implantado em um ambiente de produção usando Kubernetes e Terraform.
+## Monitoramento e Logs
 
-**FLUXO DE COMUNICAÇÃO**
+- Ver logs do backend:
+```bash
+kubectl logs -f deployment/backend
+```
 
-O Frontend faz requisições HTTP (GET, POST, PUT, DELETE) para o Backend.
+- Ver logs do frontend:
+```bash
+kubectl logs -f deployment/frontend
+```
 
-O Backend processa as requisições, interage com o Banco de Dados e retorna os dados ao Frontend.
+- Ver logs do banco:
+```bash
+kubectl logs -f statefulset/postgres
+```
 
-O Banco de Dados armazena os dados e responde às consultas do Backend.
+## Escalabilidade
+
+O sistema pode ser escalado horizontalmente:
+```bash
+# Escalar backend para 3 réplicas
+kubectl scale deployment backend --replicas=3
+
+# Escalar frontend para 2 réplicas
+kubectl scale deployment frontend --replicas=2
+```
+
+## Manutenção
+
+- Atualizar imagens:
+```bash
+kubectl set image deployment/backend backend=chicsuite-backend:nova-versao
+kubectl set image deployment/frontend frontend=chicsuite-frontend:nova-versao
+```
+
+- Reiniciar deployments:
+```bash
+kubectl rollout restart deployment backend
+kubectl rollout restart deployment frontend
+```
+
+## Backup do Banco de Dados
+
+```bash
+# Executar backup
+kubectl exec -it postgres-0 -- pg_dump -U postgres chicsuite > backup.sql
+
+# Restaurar backup
+kubectl exec -it postgres-0 -- psql -U postgres chicsuite < backup.sql
+```
+
+## Troubleshooting
+
+1. Verificar status dos pods:
+```bash
+kubectl get pods
+```
+
+2. Descrever um pod com problema:
+```bash
+kubectl describe pod [nome-do-pod]
+```
+
+3. Ver logs detalhados:
+```bash
+kubectl logs [nome-do-pod] --previous
+```
+
+4. Verificar conectividade:
+```bash
+kubectl exec -it [nome-do-pod] -- curl backend-service:3000
+```
 
 ### PASSO A PASSO
 

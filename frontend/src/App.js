@@ -7,6 +7,7 @@ import ListaProdutos from './components/Produtos/ListaProdutos';
 import ListaProfissionais from './components/Profissionais/ListaProfissionais';
 import ListaPromocoes from './components/Promocoes/ListaPromocoes';
 import ListaAgendamentos from './components/Atendimentos/ListaAgendamentos';
+import Dashboard from './components/Dashboard/Dashboard';
 
 function App() {
   return (
@@ -38,6 +39,7 @@ function App() {
             <Route path="/profissionais" element={<ListaProfissionais />} />
             <Route path="/promocoes" element={<ListaPromocoes />} />
             <Route path="/agendamentos" element={<ListaAgendamentos />} />
+            <Route path="/dashboard" element={<Dashboard />} />
           </Routes>
         </main>
       </div>
