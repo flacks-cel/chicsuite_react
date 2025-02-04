@@ -83,6 +83,8 @@ kubectl get ingress
 minikube ip
 
 # Adicionar ao /etc/hosts:
+sudo echo "$(minikube ip) chicsuite.local" >> /etc/hosts
+
 # [minikube-ip] chicsuite.local
 ```
 
@@ -161,7 +163,60 @@ kubectl logs [nome-do-pod] --previous
 ```bash
 kubectl exec -it [nome-do-pod] -- curl backend-service:3000
 ```
+# Terraform
 
+O projeto usa Terraform para gerenciar a infraestrutura Kubernetes.
+
+## Estrutura
+```
+terraform/
+├── main.tf         # Recursos principais (deployments, services, etc)
+├── variables.tf    # Variáveis configuráveis
+├── providers.tf    # Configuração do provider Kubernetes
+└── outputs.tf      # Outputs da infraestrutura
+```
+
+## Recursos Gerenciados
+- Namespace dedicado
+- Secrets para credenciais
+- Deployments (Frontend e Backend)
+- StatefulSet (PostgreSQL)
+- Services
+- Volumes persistentes
+
+## Pré-requisitos
+- Terraform instalado
+- kubectl configurado
+- Cluster Kubernetes rodando (minikube)
+- Docker com imagens construídas
+
+## Como Usar
+
+1. Inicializar:
+```bash
+cd terraform
+terraform init
+```
+
+2. Verificar plano:
+```bash
+terraform plan
+```
+
+3. Aplicar configurações:
+```bash
+terraform apply
+```
+
+4. Verificar outputs:
+```bash
+terraform output
+```
+
+5. Destruir infraestrutura:
+```bash
+terraform destroy
+```
 ### PASSO A PASSO
 
 1. Clone o repositório:
