@@ -1,3 +1,12 @@
+/**
+ * ChicSuite - Sistema de Gestão para Salão de Beleza
+ * Copyright (c) 2024-2025 Flávio Lacks
+ * 
+ * Todos os direitos reservados. Este software não pode ser copiado, modificado,
+   distribuído ou usado sem permissão expressa do autor.
+  */
+
+
 ## Arquitetura do Sistema **ChicSuite**:
 
 ### Explicação
@@ -32,7 +41,7 @@ Conecta-se ao banco de dados PostgreSQL para persistir dados.
 
 Roda na porta 3000.
 
-**Banco de Dados**
+**BANCO DE DADOS**
 
 Banco de Dados PostgreSQL:
 
@@ -42,7 +51,7 @@ Roda na porta 5432.
 
 Esse sistema é containerizado usando Docker e Docker Compose, e pode ser implantado em um ambiente de produção usando Kubernetes e Terraform.
 
-**Fluxo de Comunicação**
+**FLUXO DE COMUNICAÇÃO**
 
 O Frontend faz requisições HTTP (GET, POST, PUT, DELETE) para o Backend.
 
@@ -50,7 +59,7 @@ O Backend processa as requisições, interage com o Banco de Dados e retorna os 
 
 O Banco de Dados armazena os dados e responde às consultas do Backend.
 
-### Passo a Passo
+### PASSO A PASSO
 
 1. Clone o repositório:
    ```bash
