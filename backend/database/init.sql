@@ -42,3 +42,45 @@ CREATE TABLE IF NOT EXISTS atendimentos (
     preco DECIMAL(10,2) NOT NULL,
     data_atendimento TIMESTAMP DEFAULT CURRENT_TIMESTAMP
 );
+
+CREATE TABLE users (
+    id SERIAL PRIMARY KEY,
+    nome VARCHAR(100) NOT NULL,
+    email VARCHAR(100) UNIQUE NOT NULL,
+    senha VARCHAR(255) NOT NULL,
+    role VARCHAR(20) NOT NULL CHECK (role IN ('admin', 'attendant', 'professional')),
+    data_criacao TIMESTAMP DEFAULT CURRENT_TIMESTAMP
+);
+
+-- Tabela de logs de auditoria
+CREATE TABLE audit_logs (
+    id SERIAL PRIMARY KEY,
+    user_id INTEGER REFERENCES users(id),
+    action VARCHAR(10) NOT NULL,
+    resource VARCHAR(255) NOT NULL,
+    details JSONB,
+    status_code INTEGER,
+    duration INTEGER,
+    ip_address VARCHAR(45),
+    created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP
+);
+
+-- Tabela de sessões de usuário
+CREATE TABLE user_sessions (
+    id SERIAL PRIMARY KEY,
+    user_id INTEGER REFERENCES users(id),
+    token VARCHAR(500) NOT NULL,
+    ip_address VARCHAR(45),
+    user_agent TEXT,
+    created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
+    expires_at TIMESTAMP NOT NULL
+);
+
+-- Índices para melhor performance
+CREATE INDEX idx_audit_logs_user_id ON audit_logs(user_id);
+CREATE INDEX idx_audit_logs_created_at ON audit_logs(created_at);
+CREATE INDEX idx_user_sessions_token ON user_sessions(token);
+
+-- Criar usuário admin inicial
+INSERT INTO users (nome, email, senha, role) 
+VALUES ('Admin', 'admin@chicsuite.com', '$2b$10$kKEiHuqfwFNJgDfJHmsRkOnPt83fNFykW8srAsZ6lYcdPi4GcdGW6', 'admin');

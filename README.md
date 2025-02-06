@@ -81,6 +81,13 @@ kubectl get ingress
 ```bash
 # Obter o IP do minikube
 minikube ip
+minikube start --driver=docker
+
+## Abrir Porta 8080
+kubectl port-forward svc/frontend 8080:3000
+
+## Entrar no navegador
+http://127.0.0.1:8080
 
 # Adicionar ao /etc/hosts:
 sudo echo "$(minikube ip) chicsuite.local" >> /etc/hosts

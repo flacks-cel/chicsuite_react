@@ -1,16 +1,17 @@
 FROM node:18-alpine
-
 WORKDIR /app
 
-# Copia os arquivos de configuração
+# Copia package.json e package-lock.json primeiro
 COPY package*.json ./
-COPY public/ ./public/
-COPY src/ ./src/
-COPY tailwind.config.js ./
-COPY postcss.config.js ./
 
-# Instala as dependências
+# Instala as dependências incluindo react-scripts
 RUN npm install
+
+# Copia o resto dos arquivos
+COPY . .
+
+# Adiciona o react-scripts explicitamente
+RUN npm install react-scripts
 
 # Define a porta
 EXPOSE 3000

@@ -13,40 +13,36 @@ spec:
         app: backend
     spec:
       containers:
-        - name: backend
-          image: chicsuite-backend:latest
-          imagePullPolicy: Never
-          ports:
-            - containerPort: 3000
-          env:
-            - name: DB_HOST
-              value: postgres
-            - name: DB_PORT
-              value: "5432"
-            - name: DB_USER
-              valueFrom:
-                configMapKeyRef:
-                  name: postgres-config
-                  key: POSTGRES_USER
-            - name: DB_PASSWORD
-              valueFrom:
-                secretKeyRef:
-                  name: postgres-secret
-                  key: POSTGRES_PASSWORD
-            - name: DB_NAME
-              valueFrom:
-                configMapKeyRef:
-                  name: postgres-config
-                  key: POSTGRES_DB
+      - name: backend
+        image: chicsuite-backend:latest
+        imagePullPolicy: Never
+        ports:
+        - containerPort: 3000
+        env:
+        - name: PORT
+          value: "3000"
+        - name: DB_HOST
+          value: postgres
+        - name: DB_PORT
+          value: "5432"
+        - name: DB_USER
+          value: chicsuite
+        - name: DB_PASSWORD
+          value: chicsuite123
+        - name: DB_NAME
+          value: chicsuite
+        - name: JWT_SECRET
+          value: "chicsuite_secret_jwt_2024"
 ---
 apiVersion: v1
 kind: Service
 metadata:
   name: backend
 spec:
+  type: ClusterIP
+  ports:
+  - port: 3000
+    targetPort: 3000
+    protocol: TCP
   selector:
     app: backend
-  ports:
-    - port: 3000
-      targetPort: 3000
-  type: ClusterIP
