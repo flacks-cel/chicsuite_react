@@ -1,5 +1,5 @@
 import React from 'react';
-import { Users, Calendar, ShoppingBag, Percent, BarChart3, Scissors } from 'lucide-react';
+import { Users, Calendar, ShoppingBag, Percent, BarChart3, Scissors, UserCog } from 'lucide-react';
 import { Link } from 'react-router-dom';
 
 const NavLink = ({ to, children, icon: Icon }) => (
@@ -34,6 +34,9 @@ const Navbar = () => {
           </NavLink>
           <NavLink to="/dashboard" icon={BarChart3}>
             Dashboard
+          </NavLink>
+          <NavLink to="/usuarios" icon={UserCog}>
+            Usuários
           </NavLink>
         </div>
       </div>

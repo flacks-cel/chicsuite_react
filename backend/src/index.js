@@ -7,6 +7,7 @@ const profissionaisRoutes = require('./routes/profissionaisRoutes');
 const promocoesRoutes = require('./routes/promocoesRoutes');
 const agendamentosRoutes = require('./routes/agendamentosRoutes');
 const authRoutes = require('./routes/authRoutes');
+const userRoutes = require('./routes/userRoutes');
 
 // Inicializa o app
 const app = express();
@@ -34,6 +35,7 @@ app.use('/api/produtos', produtosRoutes);
 app.use('/api/profissionais', profissionaisRoutes);
 app.use('/api/promocoes', promocoesRoutes);
 app.use('/api/agendamentos', agendamentosRoutes);
+app.use('/api/users', userRoutes);
 
 // Middleware de tratamento de erros
 app.use((err, req, res, next) => {
