@@ -4,22 +4,19 @@ import {
   BarChart, Bar, XAxis, YAxis, CartesianGrid, Tooltip, Legend, 
   LineChart, Line, PieChart, Pie, Cell 
 } from 'recharts';
-import { Calendar, DollarSign, Package, Users, TrendingUp } from 'lucide-react';
+import { Calendar, DollarSign, ShoppingBag, Users, TrendingUp } from 'lucide-react';
 
 const Dashboard = () => {
   const [metricas, setMetricas] = useState({
     atendimentosHoje: 0,
     faturamentoHoje: 0,
     faturamentoMes: 0,
+    faturamentoPorFormaPagamento: [],
     produtosMaisVendidos: [],
     profissionaisMaisRequisitados: [],
     faturamentoPorDia: []
   });
   const [loading, setLoading] = useState(true);
-
-  useEffect(() => {
-    carregarDados();
-  }, []);
 
   const carregarDados = async () => {
     try {
@@ -28,14 +25,14 @@ const Dashboard = () => {
       const anoAtual = new Date().getFullYear();
 
       const [atendimentosRes, produtosRes, profissionaisRes] = await Promise.all([
-        axios.get('http://localhost:3000/agendamentos'),
-        axios.get('http://localhost:3000/produtos'),
-        axios.get('http://localhost:3000/profissionais')
+        axios.get('http://localhost:3002/api/agendamentos'),
+        axios.get('http://localhost:3002/api/produtos'),
+        axios.get('http://localhost:3002/api/profissionais')
       ]);
 
       const atendimentos = atendimentosRes.data;
 
-      // Cálculo de métricas
+      // Métricas básicas
       const atendimentosHoje = atendimentos.filter(a => 
         a.data_hora.startsWith(hoje)
       ).length;
@@ -52,11 +49,23 @@ const Dashboard = () => {
         })
         .reduce((sum, a) => sum + Number(a.valor_total), 0);
 
+      // Faturamento por forma de pagamento
+      const faturamentoPorFormaPagamento = Object.entries(
+        atendimentos.reduce((acc, atendimento) => {
+          const forma = atendimento.forma_pagamento;
+          acc[forma] = (acc[forma] || 0) + Number(atendimento.valor_total);
+          return acc;
+        }, {})
+      ).map(([forma, valor]) => ({
+        forma,
+        valor
+      }));
+
       // Produtos mais vendidos
       const produtosVendidos = {};
       atendimentos.forEach(atendimento => {
-        atendimento.produtos?.forEach(prodId => {
-          produtosVendidos[prodId] = (produtosVendidos[prodId] || 0) + 1;
+        atendimento.produtos?.forEach(prod => {
+          produtosVendidos[prod.id] = (produtosVendidos[prod.id] || 0) + prod.quantidade;
         });
       });
 
@@ -106,17 +115,22 @@ const Dashboard = () => {
         atendimentosHoje,
         faturamentoHoje,
         faturamentoMes,
+        faturamentoPorFormaPagamento,
         produtosMaisVendidos,
         profissionaisMaisRequisitados,
         faturamentoPorDia: faturamentoFormatado
       });
 
+      setLoading(false);
     } catch (error) {
       console.error('Erro ao carregar dados:', error);
-    } finally {
       setLoading(false);
     }
   };
+
+  useEffect(() => {
+    carregarDados();
+  }, []);
 
   const CORES = ['#8B5CF6', '#EC4899', '#6366F1', '#F472B6', '#A78BFA'];
 
@@ -186,6 +200,33 @@ const Dashboard = () => {
               <Legend />
               <Line type="monotone" dataKey="valor" stroke="#8B5CF6" name="Faturamento" />
             </LineChart>
+          </div>
+        </div>
+
+        {/* Faturamento por Forma de Pagamento */}
+        <div className="bg-white p-6 rounded-lg shadow-lg">
+          <h2 className="text-lg font-semibold text-purple-800 mb-4">
+            Faturamento por Forma de Pagamento
+          </h2>
+          <div className="h-80">
+            <PieChart width={400} height={300}>
+              <Pie
+                data={metricas.faturamentoPorFormaPagamento}
+                cx={200}
+                cy={150}
+                labelLine={false}
+                outerRadius={100}
+                fill="#8884d8"
+                dataKey="valor"
+                nameKey="forma"
+                label={({ forma, valor }) => `${forma}: R$ ${valor.toFixed(2)}`}
+              >
+                {metricas.faturamentoPorFormaPagamento.map((entry, index) => (
+                  <Cell key={`cell-${index}`} fill={CORES[index % CORES.length]} />
+                ))}
+              </Pie>
+              <Tooltip />
+            </PieChart>
           </div>
         </div>
 
